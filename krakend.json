@@ -1,0 +1,100 @@
+{
+  "$schema": "https://www.krakend.io/schema/v2.9/krakend.json",
+  "version": 3,
+  "name": "Air Serve Gateway",
+  "port": 8080,
+  "cache_ttl": "3600s",
+  "timeout": "5s",
+  "extra_config": {
+    "telemetry/logging": {
+      "level": "INFO",
+      "prefix": "[KRAKEND]",
+      "syslog": false,
+      "stdout": true
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/api/v1/auth/{rest}",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "host": [
+            "http://avia-serve-auth-webserver"
+          ],
+          "url_pattern": "/api/v1/{rest}"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/catalog/{rest}",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "host": [
+            "http://avia-serve-catalog-webserver"
+          ],
+          "url_pattern": "/api/v1/{rest}"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/notification/{rest}",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "host": [
+            "http://avia-serve-notification-webserver"
+          ],
+          "url_pattern": "/api/v1/{rest}"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/order/{rest}",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "host": [
+            "http://avia-serve-order-webserver"
+          ],
+          "url_pattern": "/api/v1/{rest}"
+        }
+      ]
+    },
+    {
+      "endpoint": "/{catchall}",
+      "output_encoding": "no-op",
+      "input_headers": ["*"],
+      "input_query_strings": ["*"],
+      "backend": [
+        {
+          "host": [
+            "http://avia-serve-front:3000"
+          ],
+          "encoding": "no-op",
+          "url_pattern": "/{catchall}"
+        }
+      ]
+    },
+    {
+      "endpoint": "/",
+      "output_encoding": "no-op",
+      "input_headers": ["*"],
+      "input_query_strings": ["*"],
+      "backend": [
+        {
+          "host": [
+            "http://avia-serve-front:3000"
+          ],
+          "encoding": "no-op",
+          "url_pattern": "/"
+        }
+      ]
+    }
+  ]
+}
