@@ -1,0 +1,17 @@
+services:
+    gateway:
+      image: devopsfaith/krakend:latest
+      container_name: avia-serve-gateway
+      ports:
+          - '80:8080'
+          - '443:8080'
+      volumes:
+          - ./krakend.json:/etc/krakend/krakend.json:ro
+      restart: unless-stopped
+      networks:
+          - avia-serve
+
+networks:
+    avia-serve:
+        name: avia-serve
+        external: true
